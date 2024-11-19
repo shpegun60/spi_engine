@@ -8,7 +8,7 @@
 #include "main.h"
 #include "stm32Spi.h"
 
-void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
+extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
 	if constexpr (SPIslave_t::elements > 0) {
 		SPIslave_t::handleTxRxComplete(hspi);
@@ -19,7 +19,7 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 	}
 }
 
-void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
+extern "C" void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 {
 	if constexpr (SPIslave_t::elements > 0) {
 		SPIslave_t::handleError(hspi);
@@ -30,7 +30,7 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 	}
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if constexpr (SPIslave_t::elements > 0) {
 		SPIslave_t::handleNSS(GPIO_Pin);
