@@ -5,8 +5,8 @@
  *      Author: admin
  */
 
-#ifndef SPI_ENGINE_SPI_RESET_H_
-#define SPI_ENGINE_SPI_RESET_H_
+#ifndef SPI_ENGINE_SPIRESET_H_
+#define SPI_ENGINE_SPIRESET_H_
 
 #include "main.h"
 
@@ -90,4 +90,4 @@
 			ENGINE_SPI6_RESET(Instance)                              	\
 		} while(0U)
 
-#endif /* SPI_ENGINE_SPI_RESET_H_ */
+#endif /* SPI_ENGINE_SPIRESET_H_ */

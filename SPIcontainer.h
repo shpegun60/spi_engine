@@ -1,27 +1,29 @@
 /*
- * SPI_Container.h
+ * SPIcontainer.h
  *
  *  Created on: Nov 17, 2024
  *      Author: admin
  */
 
-#ifndef SPI_ENGINE_SPI_CONTAINER_H_
-#define SPI_ENGINE_SPI_CONTAINER_H_
+#ifndef SPI_ENGINE_SPICONTAINER_H_
+#define SPI_ENGINE_SPICONTAINER_H_
 
-#include <array>
 #include "SPImaster.h"
 #include "SPIslave.h"
 
+#ifdef HAL_SPI_MODULE_ENABLED
+
+#include <array>
 
 template <class SPIType, u8 N = 0>
-class SPI_Container : public SPIType
+class SPIcontainer : public SPIType
 {
 public:
-	using type = SPI_Container<SPIType, N>;
+	using type = SPIcontainer<SPIType, N>;
 	static constexpr u8 elements = N;
 
-	SPI_Container();
-	~SPI_Container();
+	SPIcontainer();
+	~SPIcontainer();
 
 private:
 	static inline bool handleTxRxComplete(SPI_HandleTypeDef* const hspi);
@@ -45,7 +47,7 @@ private:
 
 // ----------------------------------------------------------------------------
 template <class SPIType, u8 N>
-SPI_Container<SPIType, N>::SPI_Container()
+SPIcontainer<SPIType, N>::SPIcontainer()
 {
 	if constexpr (N == 0) {
 		// No instances to handle
@@ -65,7 +67,7 @@ SPI_Container<SPIType, N>::SPI_Container()
 }
 
 template <class SPIType, u8 N>
-SPI_Container<SPIType, N>::~SPI_Container()
+SPIcontainer<SPIType, N>::~SPIcontainer()
 {
 	if constexpr (N == 0) {
 		// No instances to handle
@@ -85,7 +87,7 @@ SPI_Container<SPIType, N>::~SPI_Container()
 }
 
 template <class SPIType, u8 N>
-inline bool SPI_Container<SPIType, N>::handleTxRxComplete(SPI_HandleTypeDef* const hspi)
+inline bool SPIcontainer<SPIType, N>::handleTxRxComplete(SPI_HandleTypeDef* const hspi)
 {
 	if constexpr (N == 0) {
 		// No instances to handle
@@ -113,7 +115,7 @@ inline bool SPI_Container<SPIType, N>::handleTxRxComplete(SPI_HandleTypeDef* con
 
 
 template <class SPIType, u8 N>
-inline bool SPI_Container<SPIType, N>::handleError(SPI_HandleTypeDef* const hspi)
+inline bool SPIcontainer<SPIType, N>::handleError(SPI_HandleTypeDef* const hspi)
 {
 	if constexpr (N == 0) {
 		// No instances to handle
@@ -144,7 +146,7 @@ inline bool SPI_Container<SPIType, N>::handleError(SPI_HandleTypeDef* const hspi
 template <class SPIType, u8 N>
 template <class T>
 inline std::enable_if_t<std::is_same_v<T, SPIslave>, bool>
-SPI_Container<SPIType, N>::handleNSS(const uint16_t GPIO_Pin)
+SPIcontainer<SPIType, N>::handleNSS(const uint16_t GPIO_Pin)
 {
 	if constexpr (std::is_same_v<SPIType, SPIslave>) {
 		if constexpr (N == 0) {
@@ -172,4 +174,5 @@ SPI_Container<SPIType, N>::handleNSS(const uint16_t GPIO_Pin)
 	return false;
 }
 
-#endif /* SPI_ENGINE_SPI_CONTAINER_H_ */
+#endif /* HAL_SPI_MODULE_ENABLED */
+#endif /* SPI_ENGINE_SPICONTAINER_H_ */

@@ -6,7 +6,14 @@
  */
 
 #include "main.h"
-#include "stm32Spi.h"
+
+#ifdef HAL_SPI_MODULE_ENABLED
+
+#if __has_include("spi_settings.h")
+#	include "spi_settings.h"
+#else
+#	include "spi_settings_test.h"
+#endif
 
 extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
@@ -42,3 +49,4 @@ extern "C" void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 //	}
 }
 
+#endif /* HAL_SPI_MODULE_ENABLED */
